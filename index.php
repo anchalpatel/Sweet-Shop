@@ -1,4 +1,3 @@
-
 <?php
   require ("Utils\Connection.php");
   session_start();
@@ -81,7 +80,7 @@
     </div>
 
     <div class="image_gallary">
-      <?Php
+      <?php
       
       $query = "SELECT pImage FROM product LIMIT 4";
 
@@ -95,8 +94,6 @@
           echo "No images found.";
       }
       
-      // Close the database connection
-      $conn->close();
       ?>
 
     </div>
@@ -106,10 +103,14 @@
         <button type="submit" name="submit" class="btn btn-success">Explore More</button>
       </a>
     </div>
-   
+  
+  
+    <?php
+        require('Utils\Footer.php');
+    ?>
+
     <script src="https://kit.fontawesome.com/8effadc23e.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
 
   </body>
 </html>

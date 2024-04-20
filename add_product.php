@@ -37,7 +37,7 @@
 <body>
 
 <?php
-    require ("Utils\Connection.php");
+    require("Utils\Connection.php");
     require("Utils\Navbar.php");
 
     // Check if the form is submitted
@@ -46,7 +46,8 @@
         $product_price = $_POST['product_price'];
         $product_category = $_POST['product_category'];
         $product_quantity = $_POST['product_quantity'];
-    
+        $product_stock = $_POST['product_stock'];
+        
         // Check if a file is uploaded
         if (isset($_FILES['product_image'])) {
             $image = $_FILES['product_image']['tmp_name'];
@@ -55,24 +56,21 @@
             // Handle the case where no image is uploaded
             $imageData = null;
         }
-    
+        
         // Insert data into the database, including the image data
-        $insertQuery = "INSERT INTO product (pName, price, category, pImage, quantity) VALUES (?, ?, ?, ?, ?)";
+        $insertQuery = "INSERT INTO product (pName, price, category, pImage, quantity, stock, createdAt) VALUES (?, ?, ?, ?, ?, ?, NOW())";
         $stmt = mysqli_prepare($conn, $insertQuery);
-    
+        
         // Bind the parameters
-        mysqli_stmt_bind_param($stmt, "ssssb", $product_name, $product_price, $product_category, $imageData, $product_quantity);
-    
+        mysqli_stmt_bind_param($stmt, "ssssis", $product_name, $product_price, $product_category, $imageData, $product_quantity, $product_stock);
+        
         // Execute the query
         $result = mysqli_stmt_execute($stmt);
-    
+        
         // Check if the insertion was successful
         if ($result) {
             // Redirect to a success page or display a success message
-            echo '
-                <script>window.location.href = "Products.php";</script>
-            ';
-            
+            echo '<script>window.location.href = "Products.php";</script>';
             exit;
         } else {
             // Display an error message
@@ -82,45 +80,52 @@
         mysqli_stmt_close($stmt);
     }
 ?>
-        <div class="main-div">
-        <h1 class="heading">ADD PRODUCT</h1>
-        <form method="POST" enctype="multipart/form-data">
-            <div class="mb-3 flex">
-                <div>
-                    <label for="product_name" class="form-label">Product Name</label>
-                    <input type="text" class="form-control" name="product_name" required>
-                </div>
-                <div>
-                    <label for="product_price" class="form-label">Product Price</label>
-                    <input type="text" class="form-control" name="product_price" required>
-                </div>
+
+
+<div class="main-div">
+    <h1 class="heading">ADD PRODUCT</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3 flex">
+            <div>
+                <label for="product_name" class="form-label">Product Name</label>
+                <input type="text" class="form-control" name="product_name" required>
             </div>
-
-            <div class="mb-3">
-                <label for="product_category" class="form-label">Category</label>
-                <select class="form-select" aria-label="Default select example" name="product_category" required>
-                    <option selected>Open this select menu</option>
-                    <option value="Sweet">Sweet</option>
-                    <option value="Farshan">Farshan</option>
-                </select>
+            <div>
+                <label for="product_price" class="form-label">Product Price</label>
+                <input type="text" class="form-control" name="product_price" required>
             </div>
+        </div>
 
-            <div class="mb-3">
-                <label for="product_image" class="form-label">Image</label>
-                <input type="file" class="form-control" name="product_image" accept="image/*" required>
-            </div>
+        <div class="mb-3">
+            <label for="product_category" class="form-label">Category</label>
+            <select class="form-select" aria-label="Default select example" name="product_category" required>
+                <option selected>Open this select menu</option>
+                <option value="Sweet">Sweet</option>
+                <option value="Farshan">Farshan</option>
+            </select>
+        </div>
 
-            <div class="mb-3">
-                <label for="product_quantity" class="form-label">Available Quantity</label>
-                <input type="text" class="form-control custom-input" name="product_quantity" required>
-            </div>
+        <div class="mb-3">
+            <label for="product_image" class="form-label">Image</label>
+            <input type="file" class="form-control" name="product_image" accept="image/*" required>
+        </div>
 
-            <button type="submit" name="submit" class="btn btn-success">ADD PRODUCT</button>
-        </form>
-    </div>
+        <div class="mb-3">
+            <label for="product_quantity" class="form-label">Available Quantity</label>
+            <input type="text" class="form-control custom-input" name="product_quantity" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="product_stock" class="form-label">Stock</label>
+            <input type="text" class="form-control custom-input" name="product_stock" required>
+        </div>
 
-    <script src="script.js"></script>
+        <button type="submit" name="submit" class="btn btn-success">ADD PRODUCT</button>
+    </form>
+</div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
+
+<script src="script.js"></script>
 </body>
 </html>
