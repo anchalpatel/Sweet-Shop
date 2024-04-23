@@ -8,51 +8,44 @@
         header('Location: login.php');
     }
 
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = array();
-    }
-    
-   
-   
-
     if(isset($_POST['addCart'])){
         $id = $_POST['id'];
-
         $pName = $_POST['pName'];
         $pPrice = $_POST['pPrice'];
         $quantity = $_POST['quantity'];
         $number = $_POST['number'];
-        $checkproduct = array_column($_SESSION['cart'], 'id');
-        if(in_array($id, $checkproduct)){
+        $userId = $_SESSION['uId'];
+        $sql = "SELECT cartItemId from cart where userId = '$userId' AND productId='$id'";
+        $result = mysqli_query($conn, $sql);
+        if(mysqli_num_rows($result)>0){
             echo '
                 <script>
                     alert("Product alreay exist in cart");
                 </script>
                 
             ';
-            header('location:Cart.php');
+            header('location:Products.php');
         }
         else{
-            $_SESSION['cart'][] = array('id' => $id,
-            'pName' => $pName,
-            'pPrice' => $pPrice,
-            'quantity' => $quantity,
-            'number' => $number,
-            );
-            header('location:Cart.php');
+            $sql = "INSERT INTO cart (userId, productId, pQuantNum) VALUES (?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("iii", $_SESSION['uId'], $id, $number); // Assuming $id and $number are integers
+            $stmt->execute();
+            header('location:Prducts.php');
             // print_r($_SESSION['cart']); 
 
         }
        
     }
     if(isset($_POST['remove'])){
-        foreach($_SESSION['cart'] as $key => $value){
-            if($value['id'] == $_POST['id']){
-                unset($_SESSION['cart'][$key]);
-                $_SESSION['cart'] = array_values($_SESSION['cart']);
-                header('location:Cart.php');
-            }
+        if(isset($_SESSION['uId']) && isset($_SESSION['role']) && $_SESSION['role']=='customer'){
+            $userId = $_SESSION['uId'];
+            $productId = $_POST['id'];
+            $sql = "DELETE  FROM cart where userId = $userId AND productId = $productId";
+            mysqli_query($conn, $sql);
+            header('location:Cart.php');
         }
+        
     }
     if(isset($_POST['update'])){
         $productId = $_POST['id'];
@@ -91,6 +84,13 @@
     }
 
     if(isset($_POST['buy'])){
+        if (empty($_POST['deliveryDate'])) {
+            echo '<script>alert("Please set delivery date.");</script>';
+            // Redirect to the cart page after the alert is closed
+            echo '<script>window.location.href = "Cart.php";</script>';
+            // Stop further execution
+            exit;
+        } else{
         $uId = $_SESSION['uId'];
         $pPrice = $_POST['price'];
         $pId = $_POST['id'];
@@ -205,4 +205,5 @@
 
         
     }
+}
 ?>
