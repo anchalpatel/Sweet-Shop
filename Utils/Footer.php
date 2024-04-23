@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sweet Shop Management</title>
+    <?php require("Links\links.php")?>
+    <title>Crowd Management</title>
     <style>
         body {
             margin: 0;
@@ -149,6 +150,7 @@
             }
         }
     </style>
+>>>>>>> 5f4d91b66e411705adbb36cf56edd37e352f2c01
 </head>
 <body>
     <footer class="site-footer">
