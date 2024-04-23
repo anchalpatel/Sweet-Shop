@@ -77,15 +77,15 @@ mysqli_close($conn);
             <div class="row justify-content-center">
               <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1" >
 
-                <p class="text-center h1 fw-bold mb-2 mx-1 mx-md-4 mt-4">Create New Account</p>
-                <p class="text-center mb-5   ">Go Started With Your Account</p>
+                <p class="text-center h1 fw-bold mb-2 mx-1 mx-md-4 ">Create New Account</p>
+                <p class="text-center   ">Go Started With Your Account</p>
 
-                <form class="mx-1 mx-md-4" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                <form class="mx-1 mx-4 md-2" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
 
                   <div class="d-flex flex-row align-items-center mb-4">
                   <i class="fa fa-user fa-lg fa-fw bg-EDA43D mx-4"></i>
                     <div class="form-outline flex-fill mb-0">
-                      <input type="text" id="uName" name="uName" class="form-control signup" required />
+                      <input type="text" id="uName" name="uName" class="form-control signup" style="margin-top: 20px;" required />
                       <label class="form-label" for="uName" >Enter Your Name</label>
                     </div>
                   </div>
@@ -93,7 +93,7 @@ mysqli_close($conn);
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fa fa-envelope fa-lg  fa-fw mx-4"></i>
                     <div class="form-outline flex-fill mb-0">
-                      <input type="email" id="form3Example3c" class="form-control signup" required name="email"/>
+                      <input type="email" id="form3Example3c" class="form-control signup" style="margin-top: 20px;" required name="email"/>
                       <label class="form-label" for="form3Example3c" >Enter Your Email</label>
                     </div>
                   </div>
@@ -101,7 +101,7 @@ mysqli_close($conn);
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fa fa-phone fa-lg mx-4 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
-                      <input type="text" id="mobile" class="form-control signup" required name="mobile" />
+                      <input type="text" id="mobile" class="form-control signup" style="margin-top: 20px;" required name="mobile" />
                       <label class="form-label" for="mobile" >Enter Your mobile Number</label>
                     </div>
                   </div>
@@ -111,11 +111,11 @@ mysqli_close($conn);
                   <div class="form-check d-flex justify-content-center mb-5">
                     
                     <label class="form-check-label" for="form2Example3">
-                      Have an account?<a href="login.php">Login</a>
+                      Have an account?<a href="login.php"> Login</a>
                     </label>
                   </div>
 
-                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                  <div class="d-flex justify-content-center mx-4 ">
                     <button type="submit" class="btn btn-primary btn-lg btn-success" name="submit">Register</button>
                   </div>
 

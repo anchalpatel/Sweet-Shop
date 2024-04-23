@@ -80,7 +80,7 @@ session_start();
 
   function updateOTP($conn, $email, $otp)
   {
-    $updateQuery = "UPDATE user SET otp = '$otp' WHERE email = '$email'";
+    $updateQuery = "UPDATE user SET otp = '$otp',status = 'active' WHERE email = '$email'";
     $query = mysqli_query($conn, $updateQuery);
 
     if ($query) {
@@ -105,7 +105,7 @@ session_start();
       $_SESSION['email'] = $pass['email'];
       // Generate and send OTP
       $otp = rand(100000, 999999);
-      $msg = "Hi, " . $_SESSION['uName'] . ". Your OTP is: $otp. Click here to access your account http://localhost/DE/activate.php";
+      $msg = "Hi, " . $_SESSION['uName'] . ". Your OTP is: $otp. Use this Otp to enjoy our service.";
       smtp_mailer($email, 'Login Through OTP', $msg);
       updateOTP($conn, $email, $otp);
     } else {
@@ -129,7 +129,7 @@ session_start();
               <div class="row justify-content-center">
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Log In</p>
+                  <p class="text-center h1 fw-bold mb-2 mx-1 mx-md-4 " style="margin-top: 3rem;">Log In</p>
 
                   <div>
                     <!-- <p class=" bg-success text-white px-4 conf"><?php
@@ -148,25 +148,26 @@ session_start();
 
 
                     <div class="d-flex flex-row align-items-center mb-4">
-                      <i class="fa fa-envelope fa-lg mx-4 fa-fw"></i>
-                      <div class="form-outline flex-fill mb-0">
-                        <input type="email" id="email" class="form-control" required name="email" value="<?php if (isset($_COOKIE['emailcookie'])) {
-                                                                                                            echo $_COOKIE['emailcookie'];
-                                                                                                          } ?>" />
-                        <label class="form-label" for="email">Enter Your Email</label>
-                      </div>
+                    <i class="fa fa-envelope fa-lg mx-2 fa-fw" ></i>
+                    <div class="form-outline flex-fill mb-0">
+                    <input type="email" id="email" class="form-control mb-1" style="margin-top: 28px;" required name="email" value="<?php if (isset($_COOKIE['emailcookie'])) {
+                                                                                                echo $_COOKIE['emailcookie'];
+                                                                                              } ?>" />
+    <label class="form-label" for="email">Enter Your Email</label>
+  </div>
+</div>
+
+
+
+                    <div class="form-check d-flex justify-content-center ">
+
                     </div>
 
 
-                    <div class="form-check d-flex justify-content-center mb-5">
-
-                    </div>
-
-
-                    <div class="form-check d-flex justify-content-center mb-5">
+                    <div class="form-check d-flex justify-content-center mb-2">
 
                       <label class="form-check-label" for="form2Example3">
-                        Does Not Have an account?<a href="signup.php">Sign Up</a>
+                        Does Not Have an account?<a href="signup.php"> Sign Up</a>
                       </label>
                     </div>
 
@@ -190,9 +191,7 @@ session_start();
   </section>
 
 
-  <?php
-  require('Utils\Footer.php');
-  ?>
+ 
 </body>
 
 </html>

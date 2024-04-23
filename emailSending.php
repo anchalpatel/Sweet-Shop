@@ -1,6 +1,14 @@
 <?php
 
-// session_start();
+session_start();
+
+?>
+
+
+<?php
+
+
+session_start();
 
 ?>
 
@@ -12,9 +20,9 @@ include('./smtp/PHPMailerAutoload.php');
 
 
 // Modify the message to include the OTP
-$msg = "Hi, $uName. Your OTP is: $otp. Click here to activate your account http://localhost/Crowdmanagement/activate.php?token=$token ";
+$msg = "Hi, $uName. Welcome To our website enjoy your day ";
 
-echo smtp_mailer($email, 'Email Activation', $msg);
+echo smtp_mailer($email, 'Welcome To Our Sweet Shop', $msg);
 
 function smtp_mailer($to, $subject, $msg) {
 	$mail = new PHPMailer();
@@ -41,8 +49,10 @@ function smtp_mailer($to, $subject, $msg) {
 	if (!$mail->Send()) {
 		echo "Email Sending Failed";
 	} else {
-		$_SESSION['message'] = "Check Your Mail to Activate Your Account";
+		$_SESSION['message'] = "Check Your Mail to Activate Your Account $email";
 		header('location:login.php');
 	}
 }
+
+
 ?>
