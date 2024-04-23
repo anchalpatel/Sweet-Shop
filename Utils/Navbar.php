@@ -85,59 +85,52 @@
         
       </ul>
       <div class="cnt">
-            <div>
-                <?php
-                    if(isset($_SESSION['role']) && $_SESSION['role'] === 'customer'){
-                        echo '
-                            <a href="Cart.php" style="text-decoration: none;color: white;">
-                                <i class="fa-solid fa-cart-shopping"></i>
-                            </a>
-                        ';
-                    }
+    <div>
+        <?php
+            if(isset($_SESSION['role']) && $_SESSION['role'] === 'customer'){
+                echo '
+                    <a href="Cart.php" style="text-decoration: none;color: white; margin-right: 10px;">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </a>
+                ';
+            }
+        ?>
 
-                    
-                ?>
-                <?php
-                    if(isset($_SESSION['isLoggedin']) && $_SESSION['isLoggedin'] === true){
-                        echo '
-                            <a href="profile.php" style="text-decoration: none;color: white; margin-left 0.7rem;">
-                                <i class="fa-solid fa-user"></i>
-                            </a>
-                        ';
-                    }
-                ?>
+        <?php
+            if(isset($_SESSION['isLoggedin']) && $_SESSION['isLoggedin'] === true){
+                echo '
+                    <a href="profile.php" style="text-decoration: none;color: white; margin-left: 10px;">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                ';
+            }
+        ?>
 
-            </div>
-            
-            
-           
-
-            <div>
-                <?php
-                    if(!isset($_SESSION['isLoggedin']) || $_SESSION['isLoggedin'] === false){
-                        echo '
-                        <form action="" method="POST">
-                            <div class="buttonContainer">
-                                <button name="signup" class="auth rounded">SignUp</button>
-                                <button name="login" class="auth rounded">Login</button>
-                            </div>
-                        </form>
-                           
-                        ';
-                    }
-                    else{
-                        echo '
-                            <form action="" method="POST">
-                                <button name="logout" class="auth rounded">Logout</button>
-                            </form>
-                        ';
-                    }
-                ?>
-            </div>
-       
-        </div>
-       
     </div>
+
+    <div>
+        <?php
+            if(!isset($_SESSION['isLoggedin']) || $_SESSION['isLoggedin'] === false){
+                echo '
+                    <form action="" method="POST">
+                        <div class="buttonContainer">
+                            <button name="signup" class="auth rounded">SignUp</button>
+                            <button name="login" class="auth rounded">Login</button>
+                        </div>
+                    </form>
+                ';
+            }
+            else{
+                echo '
+                    <form action="" method="POST">
+                        <button name="logout" class="auth rounded">Logout</button>
+                    </form>
+                ';
+            }
+        ?>
+    </div>
+</div>
+
   </div>
 </nav>
     <script src="https://kit.fontawesome.com/8effadc23e.js" crossorigin="anonymous"></script>
