@@ -57,42 +57,45 @@
   <body>
   <?php
         require('Utils\Navbar.php');
+        require("Utils\Connection.php");    
     ?>
     <h1 class="text-center fw-bold mt-4" style="color:#EDA43D;">CART</h1>
     <div class="container col-md-10 mainContainer" style="display:flex; flex-direction:column; justify-content:space-between;">
         <div class="container cardContainer" style="gap:10px;"></div>
             <?php
-                if(isset($_SESSION['cart'])){
+                if(isset($_SESSION['uId']) && isset($_SESSION['isLoggedin']) && $_SESSION['isLoggedin']==true){
+                    $sql = "SELECT p.pId, p.pName, p.price, p.pImage, p.quantity, c.pQuantNum
+                    FROM cart c
+                    JOIN product p ON c.productId = p.pId
+                    WHERE c.userId = '{$_SESSION['uId']}'";
+                    $result = mysqli_query($conn, $sql);
                     
-                    foreach($_SESSION['cart'] as $value){
-                        $fPrice = $value['pPrice'];
+                    foreach($result as $value){
+                        $fPrice = $value['price'];
                         if($value['quantity']==500){
-                            $fPrice = $value['pPrice']/2;
+                            $fPrice = $value['price']/2;
                         }
                         else if($value['quantity']==250){
-                            $fPrice = $value['pPrice']/4;
+                            $fPrice = $value['price']/4;
                         }
                     
-                        $fPrice = $fPrice * $value['number'];
-                        $pid = $value['id'];
+                        $fPrice = $fPrice * $value['pQuantNum'];
+                        $pid = $value['pId'];
 
                         $sql = "SELECT * FROM `product` WHERE `pId`= $pid";
                         $result = mysqli_query($conn, $sql);
 
                         $tPrice += $fPrice;
-                        while($row = mysqli_fetch_assoc($result)){
-                            $image = $row['pImage'];
-                            break;
-                        }
+                        $image = $value['pImage'];
                         echo '
                         <form action="AddToCart.php" method="POST">
                             <div class="crd">
                                 <div class="d-flex flex-column content">
-                                    <input type="hidden" name="pPrice" value="'.$value['pPrice'].'"></input>
+                                    <input type="hidden" name="pPrice" value="'.$value['price'].'"></input>
                                     <input type="hidden" name="pQuantity" value="'.$value['quantity'].'"></input>
                                     <div name="name" class="title text-center fs-3 fw-bold">'.$value['pName'].'</div>
-                                    <div class="d-flex fw-semibold mt-3">Quantity : <input name="quantity" style="width: 70px; border:none; outline:none margin-left:1.5rem;" value="'.$value['number'].'"></input></div>
-                                    <input name="deliveryDate" type="date" value="<?php echo date('.'d-m-y'.')?>" required>
+                                    <div class="d-flex fw-semibold mt-3">Quantity : <input name="quantity" style="width: 70px; border:none; outline:none margin-left:1.5rem;" value="'.$value['pQuantNum'].'"></input></div>
+                                    <input name="deliveryDate" type="date" value="<?php echo date('.'d-m-y'.')?>">
                                     <div class="d-flex fw-semibold">
                                         <div>Final Price : </div><input type="text" name="price" class="fw-semibold" style="border:none; outline:none;"  value="'.$fPrice.'"></input>
                                     </div>
@@ -103,11 +106,11 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column">
-                                    <img name="pImage" src="data:image/jpeg;base64,'.base64_encode($image).'" alt="" height="200rem" width="200rem" class="rounded mt-4 img">
-                                    <div name="price" class="fw-bold mt-2">Price : ₹'.$value['pPrice'].'/kg</div>
+                                    <img name="pImage" src="data:image/jpeg;base64,'.base64_encode($value['pImage']).'" alt="" height="200rem" width="200rem" class="rounded mt-4 img">
+                                    <div name="price" class="fw-bold mt-2">Price : ₹'.$value['price'].'/kg</div>
                                 </div>
                             </div>
-                            <input value="'.$value['id'].'" name="id" style="opacity:0;"></input>
+                            <input value="'.$value['pId'].'" name="id" style="opacity:0;"></input>
                         </form>
                         
                     ';
