@@ -2,6 +2,22 @@
 require("Utils\Connection.php");
 session_start();
 ?>
+<?php
+    if(isset($_POST['login'])){
+        header('location:login.php');
+    }
+    if(isset($_POST['signup'])){
+        header('location:signup.php');
+    }
+    if(isset($_POST['logout'])){
+        session_start();
+        session_unset();
+        session_abort();
+        header("location: login.php");
+        exit;
+      
+    }
+?>
 
 <!doctype html>
 <html lang="en">
@@ -9,7 +25,7 @@ session_start();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bootstrap demo</title>
+  <title>Crowd Management</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="index.css">
@@ -41,98 +57,97 @@ session_start();
     .custom-bg {
       background-image: url('images/heroSection/Hero_BG.png');
     }
+    .navbar {
+      background-color: #EDA43D;
+      color: white;
+    }
+    .auth {
+      background-color: #198754;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem; /* Adjusted padding for better button size */
+      border-radius: 0.5rem; /* Added border-radius for rounded corners */
+    }
+    .buttonDiv:hover {
+      background-color: #EDA43D;
+     
+    } 
+    button:hover{
+      color: white;
+      background-color: #EDA43D;
+    }
   </style>
 </head>
 
 <body>
-  <?php
-  // require('Utils\Navbar.php');
-  ?>
-
-  <!-- <div class="container col-md-7">
-      <div id="carouselExampleIndicators" class="carousel slide">
-        <div class="carousel-indicators">
-
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-
-        </div>
-
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="images\HomepageCrouser.jpg" class="d-block  " alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="images\HomepageCrouser3.jpg" class="d-block " alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="images\HomePageCrowser1.jpg" class="d-block  " alt="...">
-        </div>
-      </div>
-
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-      
-      </div>
-    </div>
-
-    <div class="text-center" style="margin-top: 20px;">
-      <h2>Our Products!!</h2>
-    </div>
-
-    <div class="image_gallary">
-      <?php
-
-      $query = "SELECT pImage FROM product LIMIT 4";
-
-      $result = mysqli_query($conn, $query);
-
-      if ($result) {
-        while ($row = mysqli_fetch_assoc($result)) {
-          echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pImage']) . '" class="image">';
-        }
-      } else {
-        echo "No images found.";
+<?php
+  require("Utils\Connection.php");
+  //session_start(); // Uncomment if session is used elsewhere
+?>
+<nav class="navbar shadow-md flex justify-between items-center fixed top-0  ">
+  <div class="flex items-center ml-24">
+    <a href="index.php" class="text-white font-bold text-xl">
+      <i class="fa-solid fa-house text-white"></i>
+    </a>
+    <ul class="hidden md:flex space-x-4 font-medium mt-4 ml-8">
+    <li><a href="index.php" class="text-white hover:no-underline">Home</a></li>
+    <li><a href="Products.php" class="text-white hover:no-underline">Products</a></li>
+    <?php
+      if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+        echo '
+          <li><a href="stockProfit.php" class="text-white hover:no-underline">Profits & Stock</a></li>
+          <li><a href="PendingOrders.php" class="text-white hover:no-underline">Pending Orders</a></li>
+        ';
       }
-
-      ?>
-
-    </div>
-
-    <div class="text-center">
-      <a href="products.php">
-        <button type="submit" name="submit" class="btn btn-success">Explore More</button>
-      </a>
-    </div>
-   -->
-
-  <!-- Nav Bar -->
-  <div class="Header py-16">
-    <div class="Rectangle6 w-full h-full  bg-white"></div>
-    <div class="Group2 w-full left-14 top-14">
-      <ul class="Frame1 w-fit h-4 flex gap-12 mx-auto">
-        <li class="Home text-yellow-600 text-sm font-normal font-['Inter'] uppercase">Home </li>
-        <li class="Gifts text-yellow-950 text-sm font-normal font-['Inter'] uppercase">Gifts</li>
-        <li class="Shop text-yellow-950 text-sm font-normal font-['Inter'] uppercase">Shop</li>
-        <li class="AboutUs text-yellow-950 text-sm font-normal font-['Inter'] uppercase">About us</li>
-        <li class="ContactUs text-yellow-950 text-sm font-normal font-['Inter'] uppercase">Contact us</li>
-      </ul>
-    </div>
-    <!-- <div class="Group82 w-32 h-5 absolute left-60 top-12">
-        <div class="MaskGroup w-5 h-5 absolute left-28 top-0">
-            <img class="ShoppingCart2169842 w-5 h-5 absolute left-0 top-0" src="https://via.placeholder.com/21x21" />
-            <div class="Rectangle65 w-7 h-6 absolute left-[-4px] top-[-1px] bg-yellow-950"></div>
-        </div>
-    </div> -->
+    ?>
+  </ul>
   </div>
+
+  
+  <div class="flex items-center space-x-2 md:flex mr-24">
+    <?php
+      if (isset($_SESSION['role']) && $_SESSION['role'] === 'customer') {
+        echo '
+          <a href="Cart.php" class="text-white hover:no-underline px-2 py-1 rounded-md">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </a>
+        ';
+      }
+    ?>
+    <?php
+      if (isset($_SESSION['isLoggedin']) && $_SESSION['isLoggedin'] === true) {
+        echo '
+          <a href="profile.php" class="text-white hover:no-underline px-2 py-1 rounded-md">
+            <i class="fa-solid fa-user"></i>
+          </a>
+        ';
+      }
+    ?>
+    <div>
+      <?php
+          if(!isset($_SESSION['isLoggedin']) || $_SESSION['isLoggedin'] === false){
+              echo '
+                  <form action="" method="POST">
+                      <div class="buttonContainer">
+                          <button name="signup" class="auth rounded">SignUp</button>
+                          <button name="login" class="auth rounded">Login</button>
+                      </div>
+                  </form>
+              ';
+          }
+          else{
+              echo '
+                  <form action="" method="POST">
+                      <button name="logout" class="auth rounded">Logout</button>
+                  </form>
+              ';
+          }
+      ?>
+    </div>
+  </div>
+</nav>
+
+
 
   <section class="flex flex-col gap-5">
 
@@ -142,7 +157,7 @@ session_start();
           ALL TIME FAVOURITE
         </p>
         <div class="text-center text-yellow-950 text-4xl font-light font-petrona leading-8 w-2/3">Where Tradition Meets Passion In Every Bite.</div>
-        <button class="mx-auto text-yellow-900 text-sm font-medium font-inter uppercase tracking-wide border border-yellow-900 px-4 py-2 rounded-md hover:bg-yellow-900 hover:text-white transition duration-300 ease-in-out">View All</button>
+        <a href="products.php"><button class="no-underline text-sm font-medium font-inter uppercase tracking-wide border border-yellow-900 px-4 py-1 rounded-md transition duration-300 ease-in-out">View All</button></a>
       </div>
       <div class="hero-image">
         <img src="images/bg3-removebg-preview.png" class="w-[500px] h-[500px] my-auto">
@@ -169,84 +184,73 @@ session_start();
 
     <!-- New Arrivales -->
     <div class="flex justify-center items-center">
-      <div class="relative flex flex-col gap-10">
-        <div>
-          <p class="text-center text-yellow-950 text-3xl font-extralight leading-relaxed">New Arrivals</p>
-        </div>
-        <div class="flex justify-center items-center gap-10">
-          <div class="w-80 bg-zinc-300 h-auto shadow-lg rounded-lg overflow-hidden">
-            <div class="relative">
-              <img class="w-full h-80 object-cover rounded-t-lg" src="images/heroSection/new arrival1.png" alt="Product Image" />
-            </div>
-            <div class="bg-black text-white px-4 py-2 flex justify-between items-center">
-              <div class="text-base font-normal font-inter">$350.00</div>
-              <button class="border border-white bg-transparent text-white px-4 py-2 rounded-lg hover:bg-white hover:text-black hover:border-transparent transition duration-300">
-                Add to cart
-              </button>
-            </div>
-          </div>
-          <div class="w-80 bg-zinc-300 h-auto shadow-lg rounded-lg overflow-hidden">
-            <div class="relative">
-              <img class="w-full h-80 object-cover rounded-t-lg" src="images/heroSection/new arriaval 2.png" alt="Product Image" />
-            </div>
-            <div class="bg-black text-white px-4 py-2 flex justify-between items-center">
-              <div class="text-base font-normal font-inter">$350.00</div>
-              <button class="border border-white bg-transparent text-white px-4 py-2 rounded-lg hover:bg-white hover:text-black hover:border-transparent transition duration-300">
-                Add to cart
-              </button>
-            </div>
-          </div>
-          <div class="w-80 bg-zinc-300 h-auto shadow-lg rounded-lg overflow-hidden">
-            <div class="relative">
-              <img class="w-full h-80 object-cover rounded-t-lg" src="images/heroSection/new arrival 3.png" alt="Product Image" />
-            </div>
-            <div class="bg-black text-white px-4 py-2 flex justify-between items-center">
-              <div class="text-base font-normal font-inter">$350.00</div>
-              <button class="border border-white bg-transparent text-white px-4 py-2 rounded-lg hover:bg-white hover:text-black hover:border-transparent transition duration-300">
-                Add to cart
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="relative flex flex-col gap-10">
+    <div>
+      <p class="text-center text-yellow-950 text-3xl font-extralight leading-relaxed">New Arrivals</p>
     </div>
+    <div class="flex justify-center items-center gap-10">
+      <?php
+      // Your PHP code to fetch images from the database
+      require('Utils/Connection.php'); // Adjust the path as per your file structure
+      
+      $query = "SELECT pImage,pName,price FROM product LIMIT 4";
+      $result = mysqli_query($conn, $query);
+      
+      if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+          $imageData = base64_encode($row['pImage']);
+          $src = 'data:image/jpeg;base64,'.$imageData;
+          $price=$row['price'];
+          $pName=$row['pName'];
+          echo '
+          <div class="w-80 bg-zinc-300 h-auto shadow-lg rounded-lg overflow-hidden">
+            <div class="relative">
+              <img class="w-full h-80 object-cover rounded-t-lg" src="'.$src.'" alt="Product Image" />
+            </div>
+            <div class="bg-black text-white px-4 py-2 flex justify-between items-center">
+            <div class="text-base font-normal font-inter">'.$pName.'</div>
+              <div class="text-base font-normal font-inter">₹'.$price.'</div>
+             
+            </div>
+          </div>';
+        }
+      } else {
+        echo "No images found.";
+      }
+      
+      // Close the database connection
+      mysqli_close($conn);
+      ?>
+    </div>
+    <div class="m-auto buttonDiv">
+    <a href="products.php"><button class="no-underline text-sm font-medium font-inter uppercase tracking-wide border border-yellow-900 px-4 py-1 rounded-md transition duration-300 ease-in-out">View All</button></a>
+    </div>
+  </div>
+</div>
+
 
     <!-- Categories -->
-    <div class="flex flex-col">
+    <div class="flex flex-col mb-4">
       <!-- Categories -->
       <div class="text-yellow-950 text-center text-3xl mb-4 font-extralight font-petrona capitalize leading-relaxed">categories</div>
       <div class="flex mx-auto gap-4">
 
-        <!-- Dry Fruits -->
-        <div class="w-80  flex flex-col border p-4 rounded-lg shadow-md">
-          <img class="w-56 h-56 rounded-full mx-auto mb-4" src="images/heroSection/Dryfruites.png" alt="Dry fruits image" />
-          <div class="text-center">
-            <h3 class="text-xl text-yellow-900 font-semibold font-petrona capitalize mb-2">Dry Fruits</h3>
-            <button class="text-yellow-900 text-sm font-medium font-inter uppercase tracking-wide border border-yellow-900 px-4 py-1 rounded-md hover:bg-yellow-900 hover:text-white transition duration-300 ease-in-out">View All</button>
-          </div>
-        </div>
+       
         <!-- Sweets -->
         <div class="w-80  flex flex-col border p-4 rounded-lg shadow-md">
           <img class="w-56 h-56 rounded-full mx-auto mb-4" src="images/heroSection/Sweet.png" alt="Dry fruits image" />
           <div class="text-center">
-            <h3 class="text-xl text-yellow-900 font-semibold font-petrona capitalize mb-2">Sweets</h3>
-            <button class="text-yellow-900 text-sm font-medium font-inter uppercase tracking-wide border border-yellow-900 px-4 py-1 rounded-md hover:bg-yellow-900 hover:text-white transition duration-300 ease-in-out">View All</button>
+            <h3 class="text-xl no-underline font-semibold font-petrona capitalize mb-2">Sweets</h3><a href="products.php"><button class="no-underline text-sm font-medium font-inter uppercase tracking-wide border border-yellow-900 px-4 py-1 rounded-md  hover:text-white transition duration-300 ease-in-out">View All</button></a>
           </div>
         </div>
         <div class="w-80  flex flex-col border p-4 rounded-lg shadow-md">
           <img class="w-56 h-56 rounded-full mx-auto mb-4" src="images/heroSection/Farsan.png" alt="Dry fruits image" />
           <div class="text-center">
-            <h3 class="text-xl text-yellow-900 font-semibold font-petrona capitalize mb-2">Farsan</h3>
-            <button class="text-yellow-900 text-sm font-medium font-inter uppercase tracking-wide border border-yellow-900 px-4 py-1 rounded-md hover:bg-yellow-900 hover:text-white transition duration-300 ease-in-out">View All</button>
+            <h3 class="text-xl no-underline font-semibold font-petrona capitalize mb-2">Farsan</h3>
+            <a href="products.php"><button class="no-underline text-sm font-medium font-inter uppercase tracking-wide border border-yellow-900 px-4 py-1 rounded-md hover:text-white transition duration-300 ease-in-out">View All</button></a>
           </div>
         </div>
-        <div class="w-80  flex flex-col border p-4 rounded-lg shadow-md">
-          <img class="w-56 h-56 rounded-full mx-auto mb-4" src="images/heroSection/Dryfruites.png" alt="Dry fruits image" />
-          <div class="text-center">
-            <h3 class="text-xl text-yellow-900 font-semibold font-petrona capitalize mb-2">Dry Fruits</h3>
-            <button class="text-yellow-900 text-sm font-medium font-inter uppercase tracking-wide border border-yellow-900 px-4 py-1 rounded-md hover:bg-yellow-900 hover:text-white transition duration-300 ease-in-out">View All</button>
-          </div>
-        </div>
+     
       </div>
     </div>
   </section>

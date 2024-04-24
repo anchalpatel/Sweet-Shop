@@ -150,7 +150,6 @@
             }
         }
     </style>
->>>>>>> 5f4d91b66e411705adbb36cf56edd37e352f2c01
 </head>
 <body>
     <footer class="site-footer">
