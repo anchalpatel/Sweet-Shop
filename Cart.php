@@ -15,42 +15,59 @@
     <link rel="stylesheet" href="Cart.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
-        .crd{
+        .crd {
             display: flex;
-        
+            gap:15px;
             align-items: center;
-            gap: 7rem;
-            margin-top: 2rem;
-            
+            justify-content: space-between; /* Adjust alignment */
+            margin-top: 15px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
         }
-        .content{
-            gap: 0.8rem;
+
+        .content {
+            flex: 1; /* Let the content take remaining space */
+            gap:10px;
         }
+
+        .img {
+            flex-shrink: 0; /* Prevent image from shrinking */
+            margin-top: 0; /* Remove extra margin */
+        }
+
+        .buyAll {
+            display:flex;
+            margin-top: 20px; /* Add margin to the button */
+            justify-content:center;
+            margin-bottom:20px;
+        }
+
+        .total_amt{
+            display:flex;
+            justify-content:center;
+        }
+
         .title{
             color: #198754;
         }
-        .img{
-            margin-top: 3rem;
-        }
-        .buyAll{
-            
-            color: white;
-            background-color: #198754;
-            padding: 0.5rem 3rem;
-            border: none;
-            font-size: 0.7rem;
-        }
+    
         .mainContainer{
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
-
+            align-items: center;
+            justify-content: center;
         }
         .cardContainer{
             display: flex;
             flex-direction: column;
             flex-wrap: wrap-reverse;
             gap: 1.2rem;
+        }
+        input[type="date"] {
+            width: 200px; /* Set the desired width */
         }
     </style>
   </head>
@@ -125,11 +142,14 @@
             
         </div>
 
-        <div class="d-flex flex-column final" style="margin-top:2rem; margin-bottom:4rem; align-self:center;"></div></div>
+        <div class="d-flex flex-column final" style="margin-top:2rem; margin-bottom:8px; align-self:center;"></div></div>
             <?php
                 echo '
-                    <div class="fw-bold">Total Amount : '.$tPrice.'</div>
-                    <button class="buyAll rounded"  style="border:none; margin-top: 1rem; width:max-content;">Buy All</button>
+                    <div class="total_amt fw-bold" >Total Amount : '.$tPrice.'/-</div>
+                    <div class="buyAll">
+                        <button class="btn rounded"  style="padding: 0.3rem 1.5rem; color:white; background-color: #EDA43D;">Buy All</button>
+                    </div>
+
                 ';
             ?>
         </div>

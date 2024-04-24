@@ -94,7 +94,7 @@ mysqli_close($conn);
                     <i class="fa fa-envelope fa-lg  fa-fw mx-4"></i>
                     <div class="form-outline flex-fill mb-0">
                       <input type="email" id="form3Example3c" class="form-control signup" style="margin-top: 20px;" required name="email"/>
-                      <label class="form-label" for="form3Example3c" >Enter Your Email</label>
+                      <label class="form-label" for="form3Example3c" >Enter Your Email 1</label>
                     </div>
                   </div>
 

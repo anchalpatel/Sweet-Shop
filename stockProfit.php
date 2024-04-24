@@ -14,15 +14,19 @@
     <style>
         .product_card {
             background-color: #EEEBEB;
-            margin: 50px 0px 0px 30px;
+            margin: 20px auto;
             border-radius: 20px;
             padding-left: 15px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+            
         }
         #profit{
-            float: right;
+            text-align: center;
             margin-top: 30px;
-            margin-right: 50px;
+            font-size: 30px;
         }
+        
     </style>
 </head>
 
@@ -49,7 +53,7 @@
         while ($row = mysqli_fetch_assoc($result)) {
             $total_profit += $row['profit'];
             echo '
-            <div class="card w-50 product_card">
+            <div class="card  product_card" style="width: 500px;">
                 <div class="card-body">
                     <h2 class="card-title">' . $row['pName'] . '</h2>
                     <p class="card-text">Stock: ' . $row['stock'] . ' kg</p>

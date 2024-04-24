@@ -17,24 +17,26 @@
         $userId = $_SESSION['uId'];
         $sql = "SELECT cartItemId from cart where userId = '$userId' AND productId='$id'";
         $result = mysqli_query($conn, $sql);
-        if(mysqli_num_rows($result)>0){
+        
+        if(mysqli_num_rows($result) > 0) {
             echo '
                 <script>
-                    alert("Product alreay exist in cart");
+                    console.log("Product is already in the cart.");
+                    alert("Product is already in the cart.");
+                    window.location.href = "Products.php";
                 </script>
-                
             ';
-            header('location:Products.php');
         }
+        
         else{
             $sql = "INSERT INTO cart (userId, productId, pQuantNum) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("iii", $_SESSION['uId'], $id, $number); // Assuming $id and $number are integers
             $stmt->execute();
-            header('location:Prducts.php');
             // print_r($_SESSION['cart']); 
 
         }
+        header('location:Products.php'); 
        
     }
     if(isset($_POST['remove'])){

@@ -65,10 +65,16 @@
     <?php
         require('Utils\Navbar.php');
         $uId = $_SESSION['uId'];
-        
-        $sql = "SELECT `oId`, `oName`, `uId`, `price`, `photo`, `number`, `deliveryDate`, `status`, `pPrice`, `pQuantity` FROM `orders` WHERE `uId` = '$uId' AND `status` = 'successfull'";
+        if($_SESSION['role']=="customer"){
+            $sql = "SELECT `oId`, `oName`, `uId`, `price`, `photo`, `number`, `deliveryDate`, `status`, `pPrice`, `pQuantity` FROM `orders` WHERE `uId` = '$uId' AND `status` = 'Delivered'";
 
-        $result = mysqli_query($conn, $sql);
+            $result = mysqli_query($conn, $sql);
+        }else{
+            $sql = "SELECT `oId`, `oName`, `uId`, `price`, `photo`, `number`, `deliveryDate`, `status`, `pPrice`, `pQuantity` FROM `orders` WHERE `status` = 'Delivered' LIMIT 50";
+
+            $result = mysqli_query($conn, $sql);
+        }
+       
        
         if(!$result){
             echo '
