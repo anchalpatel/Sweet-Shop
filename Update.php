@@ -8,16 +8,25 @@ $productId = isset($_GET['productId']) ? $_GET['productId'] : null;
 if (isset($_POST['submit'])) {
     $productName = $_POST['product_name'];
     $productPrice = $_POST['product_price'];
+    if(!is_numeric($product_price)){
+        echo '
+        <script>alert("Price can not be alphabet.")</script>';
+        
+    }
     $productCategory = $_POST['product_category'];
-    $productQuantity = $_POST['product_quantity'];
     $productStock = $_POST['product_stock'];
+    if(!is_numeric($product_stock)){
+        echo '
+        <script>alert("Stock can not be alphabet.")</script>';
+        
+    }
 
     // Handle image upload
     if ($_FILES['product_image']['name']) {
         $image = addslashes(file_get_contents($_FILES['product_image']['tmp_name']));
-        $sql = "UPDATE product SET pName='$productName', price='$productPrice', category='$productCategory', quantity='$productQuantity', stock='$productStock', pImage='$image' WHERE pId='$productId'";
+        $sql = "UPDATE product SET pName='$productName', price='$productPrice', category='$productCategory', stock='$productStock', pImage='$image' WHERE pId='$productId'";
     } else {
-        $sql = "UPDATE product SET pName='$productName', price='$productPrice', category='$productCategory', quantity='$productQuantity', stock='$productStock' WHERE pId='$productId'";
+        $sql = "UPDATE product SET pName='$productName', price='$productPrice', category='$productCategory', stock='$productStock' WHERE pId='$productId'";
     }
 
     if (mysqli_query($conn, $sql)) {
@@ -39,7 +48,6 @@ if ($productId) {
         $productName = $row['pName'];
         $productPrice = $row['price'];
         $productCategory = $row['category'];
-        $productQuantity = $row['quantity'];
         $productStock = $row['stock'];
         $productImage = base64_encode($row['pImage']);
     } else {
@@ -131,13 +139,10 @@ if ($productId) {
                 <input type="file" class="form-control" name="product_image" accept="image/*">
             </div>
 
-            <div class="mb-3">
-                <label for="product_quantity" class="form-label">Update Available Quantity (Kg)</label>
-                <input type="text" class="form-control" name="product_quantity" value="<?php echo isset($productQuantity) ? $productQuantity : ''; ?>" required>
-            </div>
+            
 
             <div class="mb-3">
-                <label for="product_quantity" class="form-label">Update Available Stock </label>
+                <label for="product_quantity" class="form-label">Update Available Quantity(In Kg) </label>
                 <input type="text" class="form-control" name="product_stock" value="<?php echo isset($productStock) ? $productStock : ''; ?>" required>
             </div>
 

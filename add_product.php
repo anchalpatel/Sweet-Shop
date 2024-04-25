@@ -44,10 +44,15 @@
     if (isset($_POST['submit'])) {
         $product_name = $_POST['product_name'];
         $product_price = $_POST['product_price'];
+        if (!is_numeric($product_price)) {
+            echo '<script>alert("Price can not be alphabet.")</script>';
+        }
         $product_category = $_POST['product_category'];
-        $product_quantity = $_POST['product_quantity'];
         $product_stock = $_POST['product_stock'];
-        
+        if (!is_numeric($product_stock)) {
+            echo '<script>alert("Stock can not be alphabet.")</script>';
+        }
+    
         // Check if a file is uploaded
         if (isset($_FILES['product_image'])) {
             $image = $_FILES['product_image']['tmp_name'];
@@ -56,29 +61,46 @@
             // Handle the case where no image is uploaded
             $imageData = null;
         }
-        
-        // Insert data into the database, including the image data
-        $insertQuery = "INSERT INTO product (pName, price, category, pImage, quantity, stock, createdAt) VALUES (?, ?, ?, ?, ?, ?, NOW())";
-        $stmt = mysqli_prepare($conn, $insertQuery);
-        
-        // Bind the parameters
-        mysqli_stmt_bind_param($stmt, "ssssis", $product_name, $product_price, $product_category, $imageData, $product_quantity, $product_stock);
-        
-        // Execute the query
-        $result = mysqli_stmt_execute($stmt);
-        
-        // Check if the insertion was successful
-        if ($result) {
-            // Redirect to a success page or display a success message
-            echo '<script>window.location.href = "Products.php";</script>';
-            exit;
+    
+        // Convert product name to lowercase for case-insensitive comparison
+        $product_name_lowercase = strtolower($product_name);
+    
+        // Check if product name already exists (case-insensitive)
+        $pNameQuery = "SELECT * FROM product WHERE LOWER(pName) = ?"; // Use LOWER() to make the comparison case-insensitive
+        $stmt_check_name = mysqli_prepare($conn, $pNameQuery);
+        mysqli_stmt_bind_param($stmt_check_name, "s", $product_name_lowercase);
+        mysqli_stmt_execute($stmt_check_name);
+        mysqli_stmt_store_result($stmt_check_name);
+        $pNameCount = mysqli_stmt_num_rows($stmt_check_name);
+        mysqli_stmt_close($stmt_check_name);
+    
+        if ($pNameCount > 0) {
+            echo '<script>alert("Product Name Already Exists");</script>';
         } else {
-            // Display an error message
-            echo "Product could not be added.";
+            $insertQuery = "INSERT INTO product (pName, price, category, pImage, stock, createdAt) VALUES (?, ?, ?, ?, ?, NOW())";
+            $stmt = mysqli_prepare($conn, $insertQuery);
+    
+            // Bind the parameters
+            mysqli_stmt_bind_param($stmt, "ssssi", $product_name, $product_price, $product_category, $imageData,  $product_stock);
+    
+            // Execute the query
+            $result = mysqli_stmt_execute($stmt);
+    
+            // Check if the insertion was successful
+            if ($result) {
+                // Redirect to a success page or display a success message
+                echo '<script>window.location.href = "Products.php";</script>';
+                exit;
+            } else {
+                // Display an error message
+                echo "Product could not be added.";
+            }
+            // Close the statement
+            mysqli_stmt_close($stmt);
         }
-        // Close the statement
-        mysqli_stmt_close($stmt);
     }
+    
+       
 ?>
 
 
@@ -92,7 +114,7 @@
             </div>
             <div>
                 <label for="product_price" class="form-label">Product Price</label>
-                <input type="text" class="form-control" name="product_price" required>
+                <input type="text" class="form-control" id="price" name="product_price" required>
             </div>
         </div>
 
@@ -111,16 +133,12 @@
         </div>
 
         <div class="mb-3">
-            <label for="product_quantity" class="form-label">Available Quantity</label>
-            <input type="text" class="form-control custom-input" name="product_quantity" required>
-        </div>
-        
-        <div class="mb-3">
-            <label for="product_stock" class="form-label">Stock</label>
+            <label for="product_quantity" class="form-label">Available Quantity(Add In Kg)</label>
             <input type="text" class="form-control custom-input" name="product_stock" required>
         </div>
 
-        <button type="submit" name="submit" class="btn btn-success">ADD PRODUCT</button>
+
+        <button type="submit" id="submit" name="submit" class="btn btn-success">ADD PRODUCT</button>
     </form>
 </div>
 

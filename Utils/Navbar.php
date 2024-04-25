@@ -78,6 +78,16 @@
                             </li>
                         ';
                     }
+                    if(isset($_SESSION['role']) && $_SESSION['role'] === 'customer'){
+                        echo '
+                            <li>
+                                <a  class="nav-link" href="History.php" style="color:white" style="text-decoration: none;color: white;">History</a>
+                            </li>
+                            <li>
+                                <a  class="nav-link" href="OrdersUsers.php" style="color:white" style="text-decoration: none;color: white;">Orders</a>
+                            </li>
+                        ';
+                    }
                 ?>
         
       </ul>

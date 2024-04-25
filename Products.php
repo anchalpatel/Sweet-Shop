@@ -53,6 +53,10 @@ session_start();
             justify-content: center;
             align-items: center;
         }
+        .quantityDiv{
+            display: flex;
+            flex-direction: column;
+        }
     </style>
 </head>
 
@@ -83,12 +87,7 @@ session_start();
                     echo "No Product is available yet";
                 } else {
                     while ($row = mysqli_fetch_assoc($result)) {
-                        $quantity = $row['quantity'];
-                        if ($quantity == 500 || $quantity == 250) {
-                            $quantity = "gm";
-                        } else {
-                            $quantity = "kg";
-                        }
+                       
                         echo '
                         <div class="col-3 mb-5 mt-2">
                             <form action="AddToCart.php" method="POST">
@@ -108,13 +107,18 @@ session_start();
                                         <!-- Hidden Input for Product ID -->
                                         <input name="id" style="display:none;" type="number" value="' . $row['pId'] . '">
                                         <div class="d-flex flex-row justify-content-between mt-2">
-                                            <div>
+                                            <div class="quantityDiv">
                                                 <!-- Product Quantity -->
-                                                <input name="quantity" readonly style="font-weight:500; border:none; width:3rem; outline:none; color:#198754;" value="' . $row['quantity'] . '" class="fw-semibold"></input>
-                                                <span style="font-weight:500;margin-left:-20px; color:#198754;">' . $quantity . '</span>
-                                            </div>
+                                                <label htmlfor="quantity">Quantity : </label>
+                                                <select name="quantity" style="font-weight: 500; border: none; width: 3rem; outline: none; color: #198754;">
+                                                    <option value="250">250</option>
+                                                    <option value="500">500 </option>
+                                               
+                                            </select>
+                                            </div class="quantityDiv">
                                             <!-- Quantity Input -->
-                                            <input style="font-weight:700; width:3rem; border:1px solid:#198754; color:#198754;" type="number" value="1" name="number" id="" step="1">
+                                            
+                                            <input id="numberOfPrdct" style="font-weight:700; width:3rem; border:1px solid:#198754; color:#198754;" type="number" value="1" name="number" id="" step="1">
                                         </div>
                                         <div class="d-flex flex-row justify-content-between mt-2">';
                         if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {

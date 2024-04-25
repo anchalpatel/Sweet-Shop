@@ -105,6 +105,16 @@ session_start();
             </li>
           ';
         }
+        if (isset($_SESSION['role']) && $_SESSION['role'] === 'customer') {
+          echo '
+            <li>
+              <a href="History.php" class="text-white hover:no-underline">History</a>
+            </li>
+            <li>
+              <a href="OrdersUsers.php" class="text-white hover:no-underline">Orders</a>
+            </li>
+          ';
+        }
       ?>
     </ul>
   </div>

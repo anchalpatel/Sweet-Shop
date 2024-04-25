@@ -49,7 +49,7 @@ function smtp_mailer($to, $subject, $msg) {
 	if (!$mail->Send()) {
 		echo "Email Sending Failed";
 	} else {
-		$_SESSION['message'] = "Check Your Mail to Activate Your Account $email";
+		$_SESSION['message'] = "Check Your Mail to Activate Your Account";
 		header('location:login.php');
 	}
 }

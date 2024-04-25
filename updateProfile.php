@@ -45,7 +45,7 @@ session_start();
             $mobileNumber = $_POST['mobile'];
             $uId = $_SESSION['uId'];
 
-            $sql = "UPDATE `user` SET `uname` = '$uName', `email` = '$email', `mobileNumber` = '$mobileNumber' WHERE `uId` = $uId";
+            $sql = "UPDATE user SET uname = '$uName', email = '$email', mobileNumber = '$mobileNumber' WHERE uId = $uId";
 
             $result = mysqli_query($conn, $sql);
 
@@ -77,34 +77,7 @@ session_start();
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-md-2 text-light" style="background-color :  #EDA43D; color:white; height:92vh;">
-                <ul class="nav flex-column align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="profile.php" style="color:white; font-weight:900;">Profile</a>
-                    </li>
-                    <?php
-                        if(isset($_SESSION) && $_SESSION['role'] == 'customer'){
-                            echo '
-                                <li class="nav-item">
-                                    <a class="nav-link" href="History.php" style="color:white;">History</a>
-                                </li>
-                            ';
-                        }
-                        else{
-                            echo '
-                                <li class="nav-item">
-                                    <a class="nav-link" href="HistoryAdmin.php" style="color:white;">History</a>
-                                </li>
-                            ';
-
-                        }
-                    ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="OrdersUsers.php" style="color:white">Orders</a>
-                    </li>
-                </ul>
-            </div>
-
+      
             <!-- Main Content -->
             <div class="col-md-9 h-1000 mt-5" style="text-align : center;">
                 <h1 style="text-align : center; color:#EDA43D;">Update Profile</h1>

@@ -1,5 +1,3 @@
-
-
 <?php
     require("Utils\Connection.php");    
     session_start();
@@ -66,11 +64,11 @@
         require('Utils\Navbar.php');
         $uId = $_SESSION['uId'];
         if($_SESSION['role']=="customer"){
-            $sql = "SELECT `oId`, `oName`, `uId`, `price`, `photo`, `number`, `deliveryDate`, `status`, `pPrice`, `pQuantity` FROM `orders` WHERE `uId` = '$uId' AND `status` = 'Delivered'";
+            $sql = "SELECT oId, oName, uId, price, photo, number, deliveryDate, status, pPrice, pQuantity FROM orders WHERE uId = '$uId' AND status = 'Delivered'";
 
             $result = mysqli_query($conn, $sql);
         }else{
-            $sql = "SELECT `oId`, `oName`, `uId`, `price`, `photo`, `number`, `deliveryDate`, `status`, `pPrice`, `pQuantity` FROM `orders` WHERE `status` = 'Delivered' LIMIT 50";
+            $sql = "SELECT oId, oName, uId, price, photo, number, deliveryDate, status, pPrice, pQuantity FROM orders WHERE status = 'Delivered' LIMIT 50";
 
             $result = mysqli_query($conn, $sql);
         }
@@ -89,36 +87,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-2 text-light" style="background-color :  #EDA43D; color:white; height:92vh;">
-                <ul class="nav flex-column align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="profile.php" style="color:white; ">Profile</a>
-                    </li>
-                    <?php
-                        if(isset($_SESSION) && $_SESSION['role'] == 'customer'){
-                            echo '
-                                <li class="nav-item">
-                                    <a class="nav-link" href="History.php" style="color:white; font-weight:bold;">History</a>
-                                </li>
-                            ';
-                        }
-                        else{
-                            echo '
-                                <li class="nav-item">
-                                    <a class="nav-link" href="HistoryAdmin.php" style="color:white; font-weight:bold;">History</a>
-                                </li>
-                            ';
-
-                        }
-                    ?>
-
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="OrdersUsers.php" style="color:white">Orders</a>
-                    </li>
-                </ul>
-            </div>
+         
 
             <!-- Main Content -->
             <div class="col-md-9 h-1000">
