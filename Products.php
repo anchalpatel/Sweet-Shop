@@ -118,7 +118,7 @@ session_start();
                                             </div class="quantityDiv">
                                             <!-- Quantity Input -->
                                             
-                                            <input id="numberOfPrdct" style="font-weight:700; width:3rem; border:1px solid:#198754; color:#198754;" type="number" value="1" name="number" id="" step="1">
+                                            <input id="number" style="font-weight:700; width:3rem; border:1px solid:#198754; color:#198754;" type="number" value="1" name="number" id="" step="1">
                                         </div>
                                         <div class="d-flex flex-row justify-content-between mt-2">';
                         if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {

@@ -96,11 +96,12 @@ session_start();
             $uId = $_SESSION['uId'];
             $tPrice = $_POST['price'];
             $pId = $_POST['id'];
-            $quantity = $_POST['pQuantity'];
+            $pQuantity = $_POST['pQuantity'];
+            $number = $_POST['pQuantNum'];
             $select = "SELECT `pId`, `pName`, `price`, `category`, `pImage`, `createdAt`, `stock`, `sold` FROM `product` WHERE `pId`=$pId";
             $row = mysqli_query($conn, $select);
             $queryResult = mysqli_fetch_assoc($row);
-            $quantity = $quantity / 1000;
+            $quantity = $pQuantity / 1000;
             $stock = $queryResult['stock'] - $quantity;
 
             if ($stock < 0) {
@@ -117,9 +118,17 @@ session_start();
                 $token = md5(uniqid().rand(10000, 99999));
                 $createdAt = date('Y-m-d H:i:s');
                
-                $stmt = $conn->prepare("INSERT INTO `orders`(`oName`, `pId`, `uId`, `price`, `photo`, `deliveryDate`, `status`, `token`, `pPrice`, `pQuantity`, `createdAt`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("sddddsssdds", $pName, $pId, $uId, $tPrice, $photo, $deliveryDate, $status, $token, $pPrice, $quantity, $createdAt);
-            
+                $stmt = $conn->prepare("INSERT INTO `orders`(`oName`, `pId`, `uId`, `price`, `photo`, `number`, `deliveryDate`, `status`, `token`, `pPrice`, `pQuantity`, `createdAt`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+                // Assuming the data types are:
+                // oName: string (s)
+                // pId, uId, number, pPrice, pQuantity: integers (i)
+                // price: double (d)
+                // photo, deliveryDate, status, token, createdAt: strings (s)
+                //echo $number . " ". $tPrice . " ". $pQuantity;
+                
+                $stmt->bind_param("sdddsdsssdds", $pName, $pId, $uId, $tPrice, $photo, $number, $deliveryDate, $status, $token, $pPrice, $pQuantity, $createdAt);
+                
                 $getEmailQuery = "SELECT `email` FROM `user` WHERE `uId` = ?";
                 $stmt_email = $conn->prepare($getEmailQuery);
                 $stmt_email->bind_param("d", $uId);
@@ -131,7 +140,7 @@ session_start();
                     $stmt_email->fetch();
 
                     // Send email to the user
-                    $msg = "Hi, Your Order is $pName and your price for the product is $pPrice. Here is your token for the further purpose $token ";
+                    $msg = "Hi, Your Order is $pName and your price for the product is $tPrice. Here is your token for the further purpose $token ";
                     //smtp_mailer($email, 'Buy Product', $msg); // Call the function to send the email
                     function smtp_mailer($to, $subject, $msg)
                     {
@@ -175,7 +184,8 @@ session_start();
 
                 }
                 if ($stmt->execute()) {
-
+                    $sql = "DELETE  FROM cart where userId = $uId AND productId = $pId";
+                    mysqli_query($conn, $sql);
                 } else {
                     // Handle the error
                     echo "Error: " . $stmt->error;
@@ -207,7 +217,7 @@ session_start();
             $tPrice = $_POST['price'];
             $sql = "DELETE  FROM cart where userId = $userId AND productId = $productId";
             mysqli_query($conn, $sql);
-            echo $totalCartPrice;
+            
             ?>
             <script>
                 alert("Remove Successfully")
@@ -251,7 +261,8 @@ session_start();
                             <div class="crd">
                                 <div class="d-flex flex-column content">
                                  
-                                    <input type="hidden" name="pQuantity" value="' . $value['pQuantNum'] * $value['quantity'] . '"></input>
+                                    <input type="hidden" name="pQuantity" value="'.$value['quantity'] . '"></input>
+                                    <input type="hidden" name="pQuantNum" value="' . $value['pQuantNum'].'"></input>
                                     <div name="name" class="title text-center fs-3 fw-bold">' . $value['pName'] . '</div>
                                     <div class="d-flex fw-semibold mt-3">Quantity : <input name="quantity" style="width: 70px; border:none; outline:none margin-left:1.5rem;" value="' . $value['pQuantNum'] . ' * ' . $value['quantity'] . '"></input></div>
                                     <div class="d-flex fw-semibold mt-3">Delivery Date :</div>
